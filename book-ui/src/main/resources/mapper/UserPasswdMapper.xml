@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanyongliang.book.dao.IUserPasswdMapper">
+	<resultMap id="UserPasswdMap" type="UserPasswdBean">
+		<id property="code" column="code" />
+		<result property="userName" column="user_name"/>
+		<result property="passwdKey" column="user_key" />
+		<result property="userPasswd" column="user_password" />
+		<result property="userType" column="user_type" />
+	</resultMap>
+	<insert id="insertUserPasswd" parameterType="UserPasswdBean">
+		INSERT INTO user_password_tb (user_name,user_key,user_password,user_type) VALUES (#{userName},#{passwdKey},#{userPasswd},#{userType})
+	</insert>
+	<select id="getUserPasswordByUserName" parameterType="String" resultMap="UserPasswdMap" >
+		SELECT * FROM user_password_tb WHERE user_name = #{userName}
+	</select>
+	<update id="updateUserPasswd" parameterType="UserPasswdBean">
+		UPDATE user_password_tb SET user_key = #{passwdKey},user_password = #{userPasswd} WHERE user_name = #{userName}
+	</update>
+</mapper>

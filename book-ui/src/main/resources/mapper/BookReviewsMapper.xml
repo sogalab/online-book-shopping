@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanyongliang.book.dao.IBookReviewsMapper">
+	<resultMap id="BookReviewsMap" type="BookReviewsBean">
+		<id property="code" column="code" />
+		<result property="bookCode" column="book_code" />
+		<result property="bookQuality" column="book_quality" />
+		<result property="bookReviews" column="book_reviews" />
+		<result property="bookReviewsTime" column="book_reviews_time" />
+		<result property="userCode" column="user_code" />
+		<result property="isDelete" column="is_delete" />
+		<result property="isAccess" column="is_access" />
+		<result property="realName" column="real_name" />
+	</resultMap>
+	
+	<!-- 新增评论 -->
+	<insert id="addBookReviews" parameterType="BookReviewsBean">
+		INSERT INTO book_reviews_tb (book_code,book_quality,book_reviews,book_reviews_time,user_code,is_delete,is_access,real_name)
+		VALUES (#{bookCode},#{bookQuality},#{bookReviews},#{bookReviewsTime},#{userCode},#{isDelete},#{isAccess},#{realName})
+	</insert>
+	<!-- 根据图书编号查询已经通过的评论内容 -->
+	<select id="selectBookReviewsInfoByBookCode" resultMap="BookReviewsMap" parameterType="Integer">
+		SELECT * FROM book_reviews_tb WHERE book_code = #{bookCode} AND is_access = 1 AND is_delete = 0 ORDER BY book_reviews_time DESC
+	</select>
+	<!-- 查询所有未审核的评论 -->
+	<select id="selectAllNoAccessReviews" resultMap="BookReviewsMap">
+		SELECT * FROM book_reviews_tb WHERE is_access = 0 ORDER BY book_reviews_time DESC
+	</select>
+	<!-- 查询所有通过的评论 -->
+	<select id="selectAllPassReviews" resultMap="BookReviewsMap">
+		SELECT * FROM book_reviews_tb WHERE is_access = 1 AND is_delete = 0 ORDER BY book_reviews_time DESC
+	</select>
+	<!-- 查询所有未通过的评论 -->
+	<select id="selectAllNoPassReviews" resultMap="BookReviewsMap">
+		SELECT * FROM book_reviews_tb WHERE is_access = 1 AND is_delete = 1 ORDER BY book_reviews_time DESC
+	</select>
+	<!-- 修改状态为通过 -->
+	<update id="updateReviewsPass" parameterType="Integer">
+		UPDATE book_reviews_tb SET is_access = 1,is_delete = 0 WHERE code = #{code}
+	</update>
+	<!-- 修改状态为未通过 -->
+	<update id="updateReviewsNoPass" parameterType="Integer">
+		UPDATE book_reviews_tb SET is_access = 1,is_delete = 1 WHERE code = #{code}
+	</update>
+</mapper>

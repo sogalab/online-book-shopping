@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanyongliang.book.dao.IBookInfoMapper">
+	<resultMap id="BookInfoMap" type="BookInfoBean">
+		<id property="code" column="code" />
+		<result property="bookName" column="book_name" />
+		<result property="bookPrice" column="book_price" />
+		<result property="bookDiscounts" column="book_discounts" />
+		<result property="isNew" column="is_new" />
+		<result property="isHot" column="is_hot" />
+		<result property="isHigh" column="is_high" />
+		<result property="isDiscounts" column="is_discounts" />
+		<result property="inputTime" column="input_time" />
+		<result property="bookAuthor" column="book_author" />
+		<result property="bookPress" column="book_press" />
+		<result property="bookPublictionTime" column="book_publiction_time" />
+		<result property="bookType" column="book_type" />
+		<result property="bookDescribe" column="book_describe" />
+		<result property="bookPicture" column="book_picture" />
+		<result property="isInstore" column="is_instore" />
+		<result property="bookBatch" column="book_batch" />
+		<result property="bookISBN" column="book_isbn" />
+		<result property="bookCount" column="book_count" />
+	</resultMap>
+	<update id="updateBookCountAdd" parameterType="Integer">
+	update book_info_tb set book_count = book_count + #{1} where code =#{0}
+	</update>
+	<update id="updateBookCountReduce" parameterType="Integer">
+	update book_info_tb set book_count = book_count - #{1} where code =#{0}
+	</update>
+	<insert id="addOutStoreBook" parameterType="BookInfoBean">
+		INSERT INTO book_info_tb (book_name,book_price,book_discounts,is_new,is_hot,is_high,is_discounts,input_time,book_author,book_press,book_publiction_time,book_type,book_describe,book_picture,is_instore,book_batch,book_isbn,book_count)
+		VALUES (#{bookName},#{bookPrice},#{bookDiscounts},#{isNew},#{isHot},#{isHigh},#{isDiscounts},#{inputTime},#{bookAuthor},#{bookPress},#{bookPublictionTime},#{bookType},#{bookDescribe},#{bookPicture},#{isInstore},#{bookBatch},#{bookISBN},#{bookCount})
+	</insert>
+	<!-- 查询所有未上架的图书 -->
+	<select id="selectOutStoreBook" resultMap="BookInfoMap">
+		SELECT * FROM book_info_tb WHERE is_instore = 0 ORDER BY input_time desc
+	</select>
+	<!-- 查询所有已上架的图书 -->
+	<select id="selectInStoreBook" resultMap="BookInfoMap">
+		SELECT * FROM book_info_tb WHERE is_instore = 1 ORDER BY input_time desc
+	</select>
+	<!-- 查询所有已上架且有折扣的图书 -->
+	<select id="selectDiscStoreBook" resultMap="BookInfoMap">
+		SELECT * FROM book_info_tb WHERE is_instore = 1 AND is_discounts = 1 ORDER BY input_time desc
+	</select>
+	<!-- 查询所有已上架且是新书榜的图书 -->
+	<select id="selectNewStoreBook" resultMap="BookInfoMap">
+		SELECT * FROM book_info_tb WHERE is_instore = 1 AND is_new = 1 ORDER BY input_time desc
+	</select>
+	<!-- 查询所有已上架且是畅销榜的图书 -->
+	<select id="selectHotStoreBook" resultMap="BookInfoMap">
+		SELECT * FROM book_info_tb WHERE is_instore = 1 AND is_hot = 1 ORDER BY input_time desc
+	</select>
+	<!-- 查询所有已上架且是评分榜的图书 -->
+	<select id="selectHighStoreBook" resultMap="BookInfoMap">
+		SELECT * FROM book_info_tb WHERE is_instore = 1 AND is_high = 1 ORDER BY input_time desc
+	</select>
+	<!-- 删除图书 -->
+	<delete id="deleteOutStoreBook" parameterType="Integer">
+		DELETE FROM book_info_tb WHERE code = #{code}
+	</delete>
+	<!-- 修改图书信息 -->
+	<update id="updateOutStoreBook" parameterType="BookInfoBean">
+		UPDATE book_info_tb SET book_name = #{bookName},book_price = #{bookPrice},book_discounts = #{bookDiscounts},is_new = #{isNew},is_hot = #{isHot},is_high = #{isHigh},is_discounts = #{isDiscounts},input_time = #{inputTime},book_author = #{bookAuthor},book_press = #{bookPress},book_publiction_time = #{bookPublictionTime},book_type = #{bookType},book_describe = #{bookDescribe},book_picture = #{bookPicture},is_instore = #{isInstore},book_batch = #{bookBatch},book_isbn = #{bookISBN},book_count = #{bookCount} 
+		WHERE code = #{code}
+	</update>
+	<!-- 图书未上架变为上架 -->
+	<update id="inOutStoreBook" parameterType="Integer">
+		UPDATE book_info_tb SET is_instore = 1 WHERE code = #{code}
+	</update>
+	<!-- 添加折扣 -->
+	<update id="instorebookdisc" parameterType="BookInfoBean">
+		UPDATE book_info_tb SET book_discounts = #{bookDiscounts},is_discounts = #{isDiscounts}
+		WHERE code = #{code}
+	</update>
+	<!-- 取消折扣 -->
+	<update id="deleteinstorebookdisc" parameterType="Integer">
+		UPDATE book_info_tb SET book_discounts = 0,is_discounts = 0
+		WHERE code = #{code}
+	</update>
+	<!-- 修改折扣 -->
+	<update id="instorebookdiscupdate" parameterType="BookInfoBean">
+		UPDATE book_info_tb SET book_discounts = #{bookDiscounts}
+		WHERE code = #{code}
+	</update>
+	<!-- 新书推荐 -->
+	<update id="instorebooknew" parameterType="Integer">
+		UPDATE book_info_tb SET is_new = 1 WHERE code = #{code}
+	</update>
+	<!-- 取消新书推荐 -->
+	<update id="deleteinstorebooknew" parameterType="Integer">
+		UPDATE book_info_tb SET is_new = 0 WHERE code = #{code}
+	</update>
+	<!-- 热门推荐 -->
+	<update id="instorebookhot" parameterType="Integer">
+		UPDATE book_info_tb SET is_hot = 1 WHERE code = #{code}
+	</update>
+	<!-- 取消热门推荐 -->
+	<update id="deleteinstorebookhot" parameterType="Integer">
+		UPDATE book_info_tb SET is_hot = 0 WHERE code = #{code}
+	</update>
+	<!-- 评分推荐 -->
+	<update id="instorebookhigh" parameterType="Integer">
+		UPDATE book_info_tb SET is_high = 1 WHERE code = #{code}
+	</update>
+	<!-- 取消评分推荐 -->
+	<update id="deleteinstorebookhigh" parameterType="Integer">
+		UPDATE book_info_tb SET is_high = 0 WHERE code = #{code}
+	</update>
+	<!-- 根据图书ID查询图书 -->
+	<select id="selectBookInfoByCode" parameterType="Integer" resultMap="BookInfoMap">
+		SELECT * FROM book_info_tb WHERE code = #{code}
+	</select>
+	<!-- 根据图书分类查询所有图书 -->
+	<select id="selectInStoreBookByBookType" parameterType="String" resultMap="BookInfoMap">
+		SELECT * FROM book_info_tb WHERE book_type = #{bookType} ORDER BY input_time desc
+	</select>
+	<!-- 根据图书名模糊查询所有图书 -->
+	<select id="selectInStoreBookByBookName" parameterType="String" resultMap="BookInfoMap">
+		SELECT * FROM book_info_tb WHERE book_name LIKE CONCAT('%','${_parameter}','%') ORDER BY input_time desc
+	</select>
+</mapper>

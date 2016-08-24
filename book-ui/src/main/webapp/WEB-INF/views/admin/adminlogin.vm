@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html class="app">
+<head>
+    <meta charset="utf-8" />
+    <title>翻书网后台管理系统</title>
+    <link rel="stylesheet" href="${rc.contextPath}/resources/css/app.v2.css" type="text/css" />
+</head>
+<body >
+    <section class="vbox" >
+        <!--公用头部  end-->
+        <section>
+            <section class="hbox stretch" >
+                <section id="content" >
+                    <section class="vbox" >
+                        <!--表格主体-->
+                        <section class="scrollable padder" >
+                            <div class="m-b-md">
+                            </div>
+                            <!--数据表格  begin -->
+                            <section class="panel panel-default" style="width:500px;margin-left:30%;margin-top:10%" >
+                                <header class="panel-heading bg-dark dk" style="text-align:center;color:white">
+                                    <h4>登录</h4>
+                                </header>
+                                <form class="form-horizontal" action="loginpass" method="get">
+                                    <div class="form-group" style="margin-left:3%;margin-top:8%">
+                                        <label class="col-sm-3 control-label">用户名：</label>
+                                        <div class="col-sm-9">
+                                                <input type="text" value="$!userName" id="userName" class="form-control" name="userName" maxlength="50" style="width:250px">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-left:3%;margin-top:5%">
+                                        <label class="col-sm-3 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+                                        <div class="col-sm-9">
+                                                <input type="password" id="userPasswd" class="form-control" name="userPasswd" maxlength="50" style="width:250px">
+                                        </div>
+                                    </div>
+									
+									<div class="footer" style="margin-bottom:3%;margin-left:60%">
+										<button type="submit" class="btn btn-dark">进入系统</button>
+										<br/><br/><span style="color:red">$!msg</span>
+									</div>
+                                </form>
+                                
+                            </section>
+                            <!--数据表格  end -->
+                        </section>
+                        
+                    </section>
+                </section>
+               
+            </section>
+        </section>
+    </section>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+    <meta charset="utf-8">
+    
+    <title>详细列表</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    
+    <link rel="shortcut icon" href="${rc.contextPath}/resources/favicon.png">
+
+    <link rel="stylesheet" href="${rc.contextPath}/resources/css/grid.css">
+    <link rel="stylesheet" href="${rc.contextPath}/resources/css/style.css">
+    <link rel="stylesheet" href="${rc.contextPath}/resources/css/normalize.css">
+
+    <script src="${rc.contextPath}/resources/js/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="${rc.contextPath}/resources/js/jquery-1.8.3.min.js"><\/script>')</script>
+    <script src="${rc.contextPath}/resources/js/html5.js"></script>
+    <script src="${rc.contextPath}/resources/js/main.js"></script>
+    <script src="${rc.contextPath}/resources/js/radio.js"></script>
+    <script src="${rc.contextPath}/resources/js/checkbox.js"></script>
+    <script src="${rc.contextPath}/resources/js/selectBox.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.carouFredSel-5.2.2-packed.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.jqzoom-core.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.transit.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.easing.1.2.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.anythingslider.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.anythingslider.fx.js"></script>
+</head>
+<body>
+    <div id="top">
+       <div class="grid_12">
+                <nav>
+                    <ul>
+                        <li class="current"><a href="">快速通道&nbsp;>&nbsp;>&nbsp;></a></li>
+						<li><a href="selcetUserInfo?userName=$!realName">个人中心</a></li>
+                        <li><a href="historyOrder?userCode=$!userCode">我的订单</a></li>
+                        <li><a href="getAllShoppingCar?userCode=$!userCode">我的购物车</a></li>
+                    </ul>
+                </nav>
+            </div><!-- .grid_9 -->
+    </div><!-- #top -->
+    
+    <header>
+        <div class="container_12">
+            <div class="grid_3">
+                <hgroup>
+                    <h1 id="site_logo"><a href="/book-ui/user/index" title=""><img style="border:0" src="${rc.contextPath}/resources/images/logo.png" alt="图书商城"></a></h1>
+                    <h2 id="site_description">给你不一样的购书体验</h2>
+                </hgroup>
+            </div><!-- .grid_3 -->
+            
+            <div class="grid_9">
+                <div class="top_header">
+                    <div class="welcome">
+						#if($realName == "")
+            				<span>欢迎来到网站首页  请</span><a href="/book-ui/user/login">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/book-ui/user/register">免费注册</a>.
+            			#else
+            				<span>您好!&nbsp;&nbsp;</span><a href="selcetUserInfo?userName=$!realName">$!realName</a>,&nbsp;&nbsp;欢迎来到网站首页!
+            				<a style="float:right" href="login">切换用户</a>
+            			#end
+                    </div><!-- .welcome -->
+                
+                    <ul id="cart_nav">
+                        <li>
+                            <a class="cart_li" href="#">
+                                <div class="cart_ico"></div>
+									购物车
+                            </a>
+                            <ul class="cart_cont">
+                                <li class="no_border recently">最近添加的项目</li>
+								#if(${shoppingCarList} != "[]")
+                			      #foreach($card in $shoppingCarList)
+                	              <li>
+                	                <a code="$!card.bookCode"class="prev_cart js_list_book"><div class="cart_vert"><img src="$!imagesPath$!{card.bookInfoBean.bookPicture}" alt="" title="" /></div></a>
+                	                <div class="cont_cart">
+                	                  <h4>$!{card.bookInfoBean.bookName}</h4>
+                					  #if($!card.bookInfoBean.isDiscounts == 1)
+                    						#set($new=$!card.bookInfoBean.bookPrice * ( 1 - $!card.bookInfoBean.bookDiscounts))
+                                          <div class="price">$!{card.bookQuantity} x ￥ $new</div>
+                    					#else
+                    						<div class="price">$!{card.bookQuantity} x ￥ $!card.bookInfoBean.bookPrice</div>
+                    					#end
+                	                </div>
+                	                <a title="close" class="close js_close_car" carCode="$!{card.code}"></a>
+                	                <div class="clear"></div>
+                	              </li>
+                              		#end
+                			  #else
+                					<tr>
+                	                    <td colspan="6">
+                							<span style="font-size:10pt;margin-left:35%">购物车是空的</span>
+                						</td>
+                	                </tr>
+                				#end
+                                <li class="no_border">
+                                    <a href="getAllShoppingCar?userCode=$!userCode" class="view_cart">查看购物车</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul><!-- .cart_nav -->
+					<script>
+                   	$(function(){
+                   		$(".js_close_car").click(function(){
+                   			var carCode = $(this).attr("carCode");
+                   			var data = {
+            						carCode:carCode
+            					};
+            					$.ajax
+            					({
+            							type:'get',
+            							url:'removeShoppingCar',
+            							data:data,
+            							dataType:'text',
+            							success:function(){
+            								alert("删除成功!");
+            								history.go(0);
+            							},
+            							error:function(){
+            								alert("删除失败!");
+            							}
+            					})
+                   		})
+                   	})
+                   </script>
+	
+				<script>
+        	  	$(function(){
+        			$(".js_list_book").click(function(){
+        				var code = $(this).attr("code");
+        				window.location.href="bookdetailed?code="+code;
+        			})
+        		})
+        	  </script>
+                    
+                    <form class="search" action="bookInfoNameGrid">
+                        <input type="submit" class="search_button" value="">
+                        <input type="text" name="bookName" class="search_form" value="" placeholder="搜索您需要的图书 ...">
+                    </form><!-- .search -->
+                </div><!-- .top_header -->
+                
+                <nav class="primary">
+                    <ul>
+                        <li class="curent"><a href="">导航&nbsp;>&nbsp;>&nbsp;></a></li>
+                        <li class="parent">
+                           <a href="bookInfoGrid?bookType=所有分类">所有分类</a>
+                            <ul class="sub">
+                                #foreach($navAll in $navList)
+                					<li style="text-align:center"><a href="bookInfoGrid?bookType=$!navAll.navPareName">$!navAll.navPareName</a></li>
+                                #end
+                            </ul>
+                        </li>
+                        #foreach($nav in $navList)
+            				<li><a href="bookInfoGrid?bookType=$!nav.navPareName">$!nav.navPareName</a></li>
+            			#end
+                    </ul>
+                </nav><!-- .primary -->
+            </div><!-- .grid_9 -->
+        </div>
+    </header>
+    
+    <div class="breadcrumbs">
+        <div class="container_12">
+            <div class="grid_12">
+                 <a href="/book-ui/user/index">主页</a><span></span><a href="bookInfoGrid?bookType=所有分类">图书</a><span></span><span class="current">$!bookType</span>
+            </div><!-- .grid_12 -->
+        </div><!-- .container_12 -->
+    </div><!-- .breadcrumbs -->
+    
+    <section id="main">
+        <div class="container_12">
+            <div id="content" class="grid_9">
+                <h1 class="page_title">详细列表</h1>
+                 
+                <div class="options">
+		    <div class="grid-list">
+			<a class="grid" href="bookInfoGrid?bookType=$!bookType"><span></span></a>
+			<a class="list current" href="bookInfoList?bookType=$!bookType"><span></span></a>
+		    </div><!-- .grid-list -->
+		    
+                </div><!-- .options -->
+                <div class="clear"></div>
+				
+				<script>
+				$(function(){
+					$(".js_obn").click(function(){
+						var code = $(this).attr("code");
+						var userCode = $(this).attr("userCode");
+						var bookName = $(this).attr("bookName");
+						var getData={
+        						   bookCode:code,
+        						   userCode:userCode,
+        						   bookName:bookName
+    					};
+						$.ajax
+						({
+							type:'get',
+							url:'bookcompareadd',
+							data:getData,
+							dataType:'text',
+							success:function(){
+								alert("添加比较列表成功!");
+								history.go(0);
+							},
+							error:function(){
+								alert("添加比较列表失败,请检查登录状态!");
+							}
+						})
+					})
+					$(".js_bay").click(function(){
+						var code = $(this).attr("code");
+						var userCode = $(this).attr("userCode");
+						var bookQuantity = 1;
+						var getData={
+								   bookCode:code,
+								   userCode:userCode,
+								   bookQuantity:bookQuantity
+						};
+						$.ajax
+						({
+							type:'get',
+							url:'addShoppingCar',
+							data:getData,
+							dataType:'text',
+							success:function(){
+								alert("添加购物车成功!");
+								history.go(0);
+							},
+							error:function(){
+								alert("添加购物车失败,请检查登录状态!");
+							}
+						})
+					})
+				})
+			</script>
+                
+                <div class="products_list catalog"> 
+			#if(${bookInfoList} != "[]")
+				#foreach($book in $bookInfoList)
+                    <article>
+        			<div class="grid_3">
+        			   #if($!book.isNew == 1 && $!book.isHot == 0 && $!book.isHigh == 0)
+        					<img class="sale" src="/book-ui/resources/images/new.png" alt="New">
+        				#elseif($!book.isNew == 0 && $!book.isHot == 1 && $!book.isHigh == 0)
+        					<img class="sale" src="/book-ui/resources/images/sale.png" alt="Sale">
+        				#elseif($!book.isNew == 0 && $!book.isHot == 0 && $!book.isHigh == 1)
+        					<img class="sale" src="/book-ui/resources/images/top.png" alt="Top">
+        				#else
+        				#end
+        			    <div class="prev">
+        				<a code="$!book.code" class="js_list_book"><img src="$!imagesPath$!{book.bookPicture}" alt="" title=""></a>
+        			    </div><!-- .prev -->
+        			</div><!-- .grid_3 -->
+        				
+        			<div class="grid_6">
+        			    <div class="entry_content">
+        				<a code="$!book.code" class="js_list_book"><h3 class="title">$!book.bookName</h3></a>
+                                <p>
+								#set($des = $!book.bookDescribe)
+    							#if($des.length()>68)
+    								#set($des = $des.substring(0,68))
+    								$des . . . . . .
+    							#else
+    								$!book.bookDescribe
+								#end
+								<a class="more js_list_book" code="$!book.code">Learn more</a>
+								</p>
+                           </div><!-- .entry_content -->
+                                    
+                        <div class="price">
+                            #if($!book.isDiscounts == 1)
+        						#set($new=$!book.bookPrice * ( 1 - $!book.bookDiscounts))
+                              <div class="price_old">￥ $!book.bookPrice</div>￥ $new
+        					#else
+        						￥ $!book.bookPrice
+        					#end
+        			    </div>
+                                        
+        			    <div class="review">
+        				<a class="plus" href="#"></a>
+        				<a class="plus" href="#"></a>
+        				<a class="plus" href="#"></a>
+        				<a class="plus" href="#"></a>
+        				<a class="plus" href="#"></a>
+        				<span><strong>  好评！  </strong></span>
+        			    </div>
+        				
+                        <div class="cart">
+                            <a code="$!{book.code}" userCode="$!userCode" class="bay js_bay"><img src="${rc.contextPath}/resources/images/bg_cart.png" alt="Buy" title="">加入购物车</a>
+                            <a code="$!{book.code}" bookName="$!{book.bookName}" userCode="$!userCode" class="obn js_obn"><img src="${rc.contextPath}/resources/images/obl.png" alt="" title="">加入比较列表</a>
+                        </div><!-- .cart -->
+        			</div><!-- .grid_6 -->
+        			<div class="clear"></div>
+        		    </article>
+                    #end
+    			#else
+    				<tr>
+                        <td colspan="9">
+    						<span style="font-size:10pt;margin-left:40%">未找到您需要的图书！</span>
+    					</td>
+    					<td colspan="9">
+    						 　<br /><br />
+    					</td>
+                    </tr>
+    			#end
+                    
+                    
+                    <div class="clear"></div>
+                </div><!-- .products_list -->
+                <div class="clear"></div>
+	      
+                <div class="pagination">
+		    <ul>
+			<li class="prev"><span>&#8592;</span></li>
+			<li class="curent"><a href="#">1</a></li>
+			<li class="next"><a href="#">&#8594;</a></li>
+		    </ul>
+                </div><!-- .pagination -->
+                
+                <div class="clear"></div>
+            </div><!-- #content -->
+            
+            <div id="sidebar" class="grid_3">
+                <aside id="categories_nav">
+		    <header class="aside_title">
+                        <h3>推荐</h3>
+                    </header>
+
+		    <nav class="right_menu">
+			<ul>
+			    <li><a href="bookInfoGrid?bookType=新书上架">新书推荐<span style="margin-left:50%">更多</span></a></li>
+			    <li><a href="bookInfoGrid?bookType=畅销图书">畅销推荐<span style="margin-left:50%">更多</span></a></li>
+			    <li><a href="bookInfoGrid?bookType=人气图书">人气推荐<span style="margin-left:50%">更多</span></a></li>
+			</ul>
+		    </nav><!-- .right_menu -->
+                </aside><!-- #categories_nav -->
+
+                <aside id="compare_products">
+                    <header class="aside_title">
+                        <h3>商品比较（仅限两本）</h3>
+                    </header>
+
+		    <ul>
+				#if(${bookCompareList} != "[]")
+    				#foreach($bookCompare in $bookCompareList)
+    			    <li bookCode = "$!bookCompare.bookCode"><a title="close" class="close js_close_compare" code="$!bookCompare.code"></a>$velocityCount :&nbsp;$bookCompare.bookName</li>
+					#end
+				#else
+					<tr>
+                        <td colspan="9">
+							<span style="font-size:10pt;margin-left:30%">请先选择图书</span>
+						</td>
+                    </tr>
+				#end
+		    </ul>
+
+		    <button class="compare">比较</button>
+		    <a class="clear_all js_remove_compare" userCode="$!userCode">清空</a>
+
+		    <div class="clear"></div>
+                </aside><!-- #compare_products -->
+
+                <aside id="tags">
+		     <header class="aside_title">
+             <h3>标签</h3>
+                    </header>
+			 #foreach($tag in $navList)
+		     <a class="t$velocityCount" href="bookInfoGrid?bookType=$!tag.navPareName">$!tag.navPareName</a>
+		     #end
+	      </aside><!-- #community_poll -->
+                
+            </div><!-- .sidebar -->
+            <div class="clear"></div>
+        </div><!-- .container_12 -->
+    </section><!-- #main -->
+    <div class="clear"></div>
+        
+    <footer>
+        <div class="footer_navigation">
+            <div class="container_12">
+                <div class="grid_3">
+                     <h3>联系我们</h3>
+                    <ul class="f_contact">
+                        <li>北京市海淀区上地东路1号</li>
+                        <li>+86 17710215512</li>
+                        <li>fanyongliang@support.com</li>
+                    </ul><!-- .f_contact -->
+                </div><!-- .grid_3 -->
+
+                <div class="grid_3">
+                    <h3>友情链接</h3>
+                    <nav class="f_menu">
+                       <ul>
+                          <li><a target="_blank" href="http://www.taobao.com">淘宝网</a></li>
+            			  <li><a target="_blank" href="http://www.tmall.com">天猫商城</a></li>
+            			  <li><a target="_blank" href="http://www.jd.com">京东</a></li>
+            			  <li><a target="_blank" href="http://www.amazon.cn">亚马逊</a></li>
+            			  <li><a target="_blank" href="http://www.dangdang.com">当当网</a></li>
+            			  
+                        </ul>
+                    </nav><!-- .private -->
+                </div><!-- .grid_3 -->
+
+                <div class="grid_3">
+                    <h3>服务支持</h3>
+                    <nav class="f_menu">
+                        <ul>
+                          <li><a href="feedbackshow">用户反馈</a></li>
+            			  <li><a href="feedbackshow">关于我们</a></li>
+                        </ul>
+                    </nav><!-- .private -->
+                </div><!-- .grid_3 -->
+
+                <div class="grid_3">
+                    <h3>个人服务</h3>
+                    <nav class="f_menu">
+                        <ul>
+                          <li><a href="selcetUserInfo?userName=$!realName">个人中心</a></li>
+                          <li><a href="historyOrder?userCode=$!userCode">我的历史订单</a></li>
+                          <li><a href="getAllShoppingCar?userCode=$!userCode">购物车</a></li>
+                        </ul>
+                    </nav><!-- .private -->
+                </div><!-- .grid_3 -->
+
+
+                <div class="clear"></div>
+            </div><!-- .container_12 -->
+        </div><!-- .footer_navigation -->
+
+        <div class="footer_info">
+            <div class="container_12">
+                <div class="grid_6">
+                    <p class="copyright">Copyright (C) 图书商城 2015-2025, All Rights Reserved</p>
+                </div><!-- .grid_6 -->
+
+                <div class="grid_6">
+                    <div class="soc">
+                        <a class="google" href=""></a>
+                        <a class="twitter" href=""></a>
+                        <a class="facebook" href=""></a>
+                    </div><!-- .soc -->
+                </div><!-- .grid_6 -->
+
+                <div class="clear"></div>
+            </div><!-- .container_12 -->
+        </div><!-- .footer_info -->
+    </footer>
+</body>
+</html>

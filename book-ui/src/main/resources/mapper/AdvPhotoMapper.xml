@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanyongliang.book.dao.IAdvPhotoMapper">
+	<resultMap id="AdvPhotoMap" type="AdvPhotoBean">
+		<id property="code" column="code" />
+		<result property="photoDescribe" column="photo_describe" />
+		<result property="fileName" column="file_name" />
+	</resultMap>
+	
+	<select id="selectAllAdvPhoto" resultMap="AdvPhotoMap" resultType="List">
+		SELECT * FROM adv_photo_tb
+	</select>
+	<update id="updateAdvPhoto" parameterType="AdvPhotoBean">
+		UPDATE adv_photo_tb SET photo_describe = #{photoDescribe} , file_name = #{fileName} WHERE code = #{code}
+	</update>
+	<insert id="addAdvPhoto" parameterType="AdvPhotoBean">
+		INSERT INTO adv_photo_tb (photo_describe,file_name) VALUES (#{photoDescribe},#{fileName})
+	</insert>
+	<delete id="deleteAdvPhoto" parameterType="Integer">
+		DELETE FROM adv_photo_tb WHERE code = #{code}
+	</delete>
+</mapper>

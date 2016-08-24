@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanyongliang.book.dao.IUserFeedbackMapper">
+	<resultMap id="UserFeedbackMap" type="UserFeedbackBean">
+		<id property="code" column="code" />
+		<result property="userName" column="user_name" />
+		<result property="feedback" column="feedback" />
+	</resultMap>
+	<insert id="insertFeedback" parameterType="UserFeedbackBean">
+	
+INSERT INTO user_feedback_tb 
+	( 
+	user_name, 
+	feedback
+	)
+	VALUES
+	(
+	#{userName}, 
+	#{feedback}
+	);
+	</insert>
+	<select id="selectFeedback"  resultMap="UserFeedbackMap" resultType="list">
+	select * from user_feedback_tb 
+	</select>
+</mapper>

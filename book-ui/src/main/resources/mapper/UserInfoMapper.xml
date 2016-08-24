@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanyongliang.book.dao.IUserInfoMapper">
+	<resultMap id="UserInfoMap" type="UserInfoBean">
+		<id property="code" column="code" />
+		<result property="idCard" column="id_card" />
+		<result property="realName" column="real_name" />
+		<result property="userEmail" column="user_email" />
+		<result property="userName" column="user_name" />
+	</resultMap>
+	<insert id="insertUserInfo" parameterType="UserInfoBean">
+		insert into
+		user_info_tb(user_name,real_name,id_card,user_email)
+		values(#{userName},#{realName},#{idCard},#{userEmail})
+	</insert>
+	<delete id="deleteByUserName" parameterType="String">
+		delete from user_info_tb
+		where user_name=#{userName}
+	</delete>
+	<update id="updateUserInfo" parameterType="UserInfoBean">
+		update user_info_tb set
+		real_name=#{realName},id_card=#{idCard},user_email=#{userEmail}
+		where user_name=#{userName}
+	</update>
+	<select id="selectByUserName" parameterType="String" resultMap="UserInfoMap">
+		select * from
+		user_info_tb where user_name=#{userName}
+	</select>
+	<select id="selectAllUsers" resultMap="UserInfoMap">
+		select * from user_info_tb
+	</select>
+	<select id="selectByKey" parameterType="String" resultType="UserInfoBean" resultMap="UserInfoMap">
+		select * from user_info_tb where user_name like CONCAT('%','${_parameter}','%')
+	</select>
+	<select id="selectCount" resultType="int">
+		select count(*) from user_info_tb
+	</select>
+</mapper>

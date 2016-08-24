@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanyongliang.book.dao.IBookCompareMapper">
+	<resultMap id="BookCompareMap" type="BookCompareBean">
+		<id property="code" column="code" />
+		<result property="userCode" column="user_code" />
+		<result property="bookCode" column="book_code" />
+		<result property="bookName" column="book_name" />
+	</resultMap>
+	
+	<!-- 新增图书比较信息 -->
+	<insert id="addBookCompareInfo" parameterType="BookCompareBean">
+		INSERT INTO book_compare_tb (user_code,book_code,book_name)
+		VALUES (#{userCode},#{bookCode},#{bookName})
+	</insert>
+	<!-- 查询某用户的图书比较信息 -->
+	<select id="selectBookCompareInfoByUserCode" resultMap="BookCompareMap" parameterType="Integer">
+		SELECT * FROM book_compare_tb WHERE user_code = #{userCode}
+	</select>
+	<!-- 删除某一条图书比较信息 -->
+	<delete id="deleteBookCompareInfoByCode" parameterType="Integer">
+		DELETE FROM book_compare_tb WHERE code = #{code}
+	</delete>
+	<!-- 清空某用户图书比较信息 -->
+	<delete id="deleteBookCompareInfoAll">
+		DELETE FROM book_compare_tb WHERE user_code = #{userCode}
+	</delete>
+</mapper>

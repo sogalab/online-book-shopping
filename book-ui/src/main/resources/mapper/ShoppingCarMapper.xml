@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanyongliang.book.dao.IShoppingCarMapper">
+	<resultMap id="ShoppingCarMap" type="ShoppingCarBean">
+		<id property="code" column="code" />
+		<result property="bookCode" column="book_code" />
+		<result property="bookQuantity" column="book_quantity" />
+		<result property="userCode" column="user_code" />
+	</resultMap>
+	<insert id="insertToCar" parameterType="ShoppingCarBean">
+	INSERT INTO shopping_car_tb 
+	( book_code, user_code, book_quantity)
+	VALUES
+	( #{bookCode}, #{userCode}, #{bookQuantity}); 
+	</insert>
+	<delete id="deleteToCar" parameterType="Integer">
+	delete from shopping_car_tb where code = #{carCode} 
+	</delete>
+	<delete id="deleteAllToCar" parameterType="Integer">
+	delete from shopping_car_tb where user_code = #{userCode}
+	</delete>
+	<select id="selectToCar" parameterType="Integer" resultType="list" resultMap="ShoppingCarMap">
+	select * from shopping_car_tb where user_code = #{userCode}
+	</select>
+	<select id="selectCarByBookCode" parameterType="ShoppingCarBean" resultMap="ShoppingCarMap">
+	select * from shopping_car_tb where user_code = #{userCode} and book_code = #{bookCode}
+	</select>
+	<update id="updateCarByCode" parameterType="ShoppingCarBean">
+	update shopping_car_tb set book_quantity = #{bookQuantity}  
+	where code = #{code}
+	</update>
+</mapper>

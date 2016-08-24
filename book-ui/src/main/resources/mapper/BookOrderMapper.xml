@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanyongliang.book.dao.IBookOrderMapper">
+	<resultMap id="BookOrderMap" type="BookOrderBean">
+		<id property="orderCode" column="order_code" />
+		<result property="orderStatus" column="order_status" />
+		<result property="orderTime" column="order_time" />
+		<result property="total" column="total" />
+		<result property="userAddress" column="user_address" />
+		<result property="userCode" column="user_code" />
+	</resultMap>
+	<delete id="deleteBookOrder" parameterType="Integer">
+	delete from book_order_tb where order_code=#{orderCode}
+	</delete>
+	<insert id="insertBookOrder" parameterType="BookOrderBean" useGeneratedKeys="true" keyProperty="orderCode">
+	INSERT INTO book_order_tb 
+	(
+	order_time, 
+	order_status, 
+	total, 
+	user_address, 
+	user_code
+	)
+	VALUES
+	( 
+	#{orderTime}, 
+	#{orderStatus}, 
+	#{total}, 
+	#{userAddress}, 
+	#{userCode}
+	);
+	</insert>
+	<select id="selectBookOrderByUserCode" parameterType="Integer" resultMap="BookOrderMap" resultType="list">
+	select * from book_order_tb 
+	where user_code = #{userCode}
+	</select>
+	<select id="selectBookOrderByStatus" parameterType="Integer" resultMap="BookOrderMap" resultType="list">
+	select * from book_order_tb 
+	where order_status = #{orderStatus}	
+	</select>
+	<select id="selectUserBookOrderByStatus" parameterType="Integer" resultMap="BookOrderMap" resultType="list">
+	select * from book_order_tb 
+	where order_status = #{orderStatus} and user_code = #{userCode}
+	</select>
+	<update id="updateBookOrderStatus" parameterType="Integer">
+	update book_order_tb set order_status =#{1} where order_code = #{0} 
+	</update>
+</mapper>

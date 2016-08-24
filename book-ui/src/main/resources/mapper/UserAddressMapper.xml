@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanyongliang.book.dao.IUserAddressMapper">
+	<resultMap id="UserAddressMap" type="UserAddressBean">
+		<id property="code" column="code" />
+		<result property="userAddress" column="user_address" />
+		<result property="userInfoCode" column="user_info_code" />
+	</resultMap>
+	<insert id="insertAddress" parameterType="UserAddressBean">
+	INSERT INTO user_address_tb 
+	( 
+	user_info_code, 
+	user_address
+	)
+	VALUES
+	( 
+	#{userInfoCode}, 
+	#{userAddress}
+	);
+	</insert>
+	<update id="updateAddress" parameterType="UserAddressBean">
+	update user_address_tb set user_address=#{userAddress} where user_info_code=#{userInfoCode}
+	</update>
+	<delete id="deleteAddredd" parameterType="Integer">
+	delete from user_address_tb where code=#{code}
+	</delete>
+	<select id="selectAddress" parameterType="Integer" resultMap="UserAddressMap" resultType="list">
+	select * from user_address_tb where user_info_code=#{userCode}
+	</select>
+</mapper>

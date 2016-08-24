@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+    <meta charset="utf-8">
+    
+    <title>修改密码</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    
+    <link rel="shortcut icon" href="${rc.contextPath}/resources/favicon.png">
+
+    <link rel="stylesheet" href="${rc.contextPath}/resources/css/grid.css">
+    <link rel="stylesheet" href="${rc.contextPath}/resources/css/style.css">
+    <link rel="stylesheet" href="${rc.contextPath}/resources/css/normalize.css">
+
+    <script src="${rc.contextPath}/resources/js/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="${rc.contextPath}/resources/js/jquery-1.8.3.min.js"><\/script>')</script>
+    <script src="${rc.contextPath}/resources/js/html5.js"></script>
+    <script src="${rc.contextPath}/resources/js/main.js"></script>
+    <script src="${rc.contextPath}/resources/js/radio.js"></script>
+    <script src="${rc.contextPath}/resources/js/checkbox.js"></script>
+    <script src="${rc.contextPath}/resources/js/selectBox.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.carouFredSel-5.2.2-packed.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.jqzoom-core.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.transit.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.easing.1.2.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.anythingslider.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery.anythingslider.fx.js"></script>
+</head>
+<body>
+    <div id="top">
+            <div class="grid_9">
+                <nav>
+                    <ul>
+                        <li class="current"><a href="">快速通道&nbsp;>&nbsp;>&nbsp;></a></li>
+						<li><a href="selcetUserInfo?userName=$!realName">个人中心</a></li>
+                        <li><a href="historyOrder?userCode=$!userCode">我的订单</a></li>
+                        <li><a href="getAllShoppingCar?userCode=$!userCode">我的购物车</a></li>
+                    </ul>
+                </nav>
+            </div><!-- .grid_9 -->
+    </div><!-- #top -->
+    
+    <header>
+        <div class="container_12">
+            <div class="grid_3">
+                <hgroup>
+                    <h1 id="site_logo"><a href="/book-ui/user/index" title=""><img style="border:0" src="${rc.contextPath}/resources/images/logo.png" alt="图书商城"></a></h1>
+                    <h2 id="site_description">给你不一样的购书体验</h2>
+                </hgroup>
+            </div><!-- .grid_3 -->
+            
+            <div class="grid_9">
+                <div class="top_header">
+                    <div class="welcome">
+						✿　<a href="/book-ui/user/index">返回首页</a>
+                    </div><!-- .welcome -->
+                    
+                    <form class="search" action="bookInfoNameGrid">
+                        <input type="submit" class="search_button" value="">
+                        <input type="text" name="bookName" class="search_form" value="" placeholder="搜索您需要的图书 ...">
+                    </form><!-- .search -->
+                </div><!-- .top_header -->
+            </div><!-- .grid_9 -->
+        </div>
+    </header>
+	
+	<div class="breadcrumbs">
+        <div class="container_12">
+            <div class="grid_12">
+                 <a href="/book-ui/user/index">主页</a><span></span><a href="bookInfoGrid?bookType=所有分类">图书</a><span></span><span class="current">修改密码</span>
+            </div><!-- .grid_12 -->
+        </div><!-- .container_12 -->
+    </div><!-- .breadcrumbs -->
+    
+    <section id="main" class="page-login">
+        <div class="container_12">
+            <div id="content" class="grid_12">
+                <header>
+                    <h1 class="page_title">修改密码</h1>
+                </header>
+                    
+                <article style="border:0;padding-left:26%">
+		
+           <div class="grid_6 registed_form">
+			<form class="registed" action="/book-ui/user/update" method="get">
+			    <div class="email">
+				<strong>用户名:</strong><sup>*</sup><br>
+				<input type="text" name="userName" class="" value="$!userName" readonly/>
+			    </div><!-- .email -->
+			    <div class="password">
+				<strong>新密码:</strong><sup>*</sup><br>
+				<input type="password" name="userPasswd" class="" value=""/>
+			    </div><!-- .password -->
+				<div class="password">
+				<strong>确认密码:</strong><sup>*</sup><br>
+				<input type="password" name="userPasswdRP" class="" value=""/>
+			    </div><!-- .password -->
+			    <div class="submit" style="padding-left:10%">										
+				<input type="submit" value="完成">
+				<sup>*</sup><span>$!msg</span>
+			    </div><!-- .submit -->
+			</form><!-- .registed -->
+                    </div><!-- .grid_6 -->
+		</article>
+                    
+                <div class="clear"></div>
+            </div><!-- #content -->
+
+            <div class="clear"></div>
+        </div><!-- .container_12 -->
+    </section><!-- #main -->
+    <div class="clear"></div>
+        
+    <footer>
+        <div class="footer_navigation">
+            <div class="container_12">
+                <div class="grid_3">
+                     <h3>联系我们</h3>
+                    <ul class="f_contact">
+                        <li>北京市海淀区上地东路1号</li>
+                        <li>+86 17710215512</li>
+                        <li>fanyongliang@support.com</li>
+                    </ul><!-- .f_contact -->
+                </div><!-- .grid_3 -->
+
+                <div class="grid_3">
+                    <h3>友情链接</h3>
+                    <nav class="f_menu">
+                       <ul>
+                          <li><a target="_blank" href="http://www.taobao.com">淘宝网</a></li>
+            			  <li><a target="_blank" href="http://www.tmall.com">天猫商城</a></li>
+            			  <li><a target="_blank" href="http://www.jd.com">京东</a></li>
+            			  <li><a target="_blank" href="http://www.amazon.cn">亚马逊</a></li>
+            			  <li><a target="_blank" href="http://www.dangdang.com">当当网</a></li>
+            			  
+                        </ul>
+                    </nav><!-- .private -->
+                </div><!-- .grid_3 -->
+
+                <div class="grid_3">
+                    <h3>服务支持</h3>
+                    <nav class="f_menu">
+                        <ul>
+                          <li><a href="feedbackshow">用户反馈</a></li>
+            			  <li><a href="feedbackshow">关于我们</a></li>
+                        </ul>
+                    </nav><!-- .private -->
+                </div><!-- .grid_3 -->
+
+                <div class="grid_3">
+                    <h3>个人服务</h3>
+                    <nav class="f_menu">
+                        <ul>
+                          <li><a href="selcetUserInfo?userName=$!realName">个人中心</a></li>
+                          <li><a href="historyOrder?userCode=$!userCode">我的历史订单</a></li>
+                          <li><a href="getAllShoppingCar?userCode=$!userCode">购物车</a></li>
+                        </ul>
+                    </nav><!-- .private -->
+                </div><!-- .grid_3 -->
+
+
+                <div class="clear"></div>
+            </div><!-- .container_12 -->
+        </div><!-- .footer_navigation -->
+
+        <div class="footer_info">
+            <div class="container_12">
+                <div class="grid_6">
+                    <p class="copyright">Copyright (C) 图书商城 2015-2025, All Rights Reserved</p>
+                </div><!-- .grid_6 -->
+
+                <div class="grid_6">
+                    <div class="soc">
+                        <a class="google" href=""></a>
+                        <a class="twitter" href=""></a>
+                        <a class="facebook" href=""></a>
+                    </div><!-- .soc -->
+                </div><!-- .grid_6 -->
+
+                <div class="clear"></div>
+            </div><!-- .container_12 -->
+        </div><!-- .footer_info -->
+    </footer>
+</body>
+</html>

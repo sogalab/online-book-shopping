@@ -1,0 +1,975 @@
+﻿<!DOCTYPE html>
+<html class="app">
+<head>
+    <meta charset="utf-8" />
+    <title>上架图书列表</title>
+	<link rel="shortcut icon" href="/book-ui/resources/favicon.png">
+    <link rel="stylesheet" href="${rc.contextPath}/resources/css/font.css" type="text/css" cache="false" />
+    <link rel="stylesheet" href="${rc.contextPath}/resources/css/app.v2.css" type="text/css" />
+    <link href="${rc.contextPath}/resources/css/datatables.css" rel="stylesheet" />
+    <script src="${rc.contextPath}/resources/js/app.v2.js"></script>
+    <script src="${rc.contextPath}/resources/js/jquery-1.7.2.min.js" ></script>
+	<script src="${rc.contextPath}/resources/js/jquery-ui.dialog.min.js"></script>
+	<script src="${rc.contextPath}/resources/js/jquery.lightbox.js" type="text/javascript"></script>
+    <style>
+        .fa-20x { font-family: 'Microsoft YaHei'; font-size: 20px; line-height: 2em; }
+
+        .fa-10x { font-family: 'Microsoft YaHei'; font-size: 18px; line-height: 1em; }
+
+        div.dataTables_wrapper select { width: auto; margin: 0 4px; }
+
+        .navbar-brand .logo { max-height: 30px; border-radius: 3px; }
+
+        table td { word-wrap: break-word; }
+
+        .flleft { float: left; padding-left: 10%; }
+    </style>
+	<script>
+		function validFile(){
+        	if($("#file").val() != null && $("#file").val() != ""){
+        		$("#bookPic").val($("#file").val());
+        	}else{
+        		$("#bookPic").val("");
+        	}
+			if($("#fileadd").val() != null && $("#fileadd").val() != ""){
+        		$("#bookPicadd").val($("#fileadd").val());
+        	}else{
+        		$("#bookPicadd").val("");
+        	}
+        	
+        }
+	</script>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function(){	    
+			$(".lightbox").lightbox({
+			    fitToScreen: true,
+			    imageClickClose: false
+		    });
+			
+			$(".lightbox-2").lightbox({
+			    fitToScreen: true,
+			    scaleImages: true,
+			    xScale: 1.2,
+			    yScale: 1.2,
+			    displayDownloadLink: true
+		    });
+		});
+
+	</script>
+	<style type="text/css">
+        input{ vertical-align:middle; margin:0; padding:0}
+        .file-box{ position:relative;width:340px}
+        .txtnew{ height:22px; border:1px solid #cdcdcd; width:180px;}
+        .btnnew{ background-color:#FFF; border:1px solid #CDCDCD;height:24px; width:70px;}
+        .filenew{ position:absolute; top:0; right:80px; height:24px;opacity: 0;width:260px }
+    </style>
+</head>
+<body onload="setInterval('validFile()',50)">
+    <section class="vbox">
+        <!--公用头部  begin-->
+        <header class="bg-dark dk header navbar navbar-fixed-top-xs">
+            <div class="navbar-header aside-md">
+                <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <a href="#" class="navbar-brand" data-toggle="fullscreen">
+					<img style="border:0" src="${rc.contextPath}/resources/images/logo.png" alt="图书商城"> 后台管理系统
+                </a>
+                <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".nav-user">
+                    <i class="fa fa-cog"></i>
+                </a>
+            </div>
+            <div class="flleft">&nbsp;</div>
+            <ul class="nav navbar-nav navbar-right hidden-xs nav-user">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                       管理员<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight">
+                        <span class="arrow top"></span>
+                        <li><a href="updatePassword">修改密码</a> </li>
+                        <li><a href="loginout">退出</a> </li>
+                    </ul>
+                </li>
+            </ul>
+        </header>
+        <!--公用头部  end-->
+        <section>
+            <section class="hbox stretch">
+                <!-- 公用左侧导航  begin-->
+                <aside class="bg-dark lter aside-md hidden-print" id="nav">
+                    <section class="vbox">
+                        <section class="w-f scrollable">
+                            <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="5px" data-color="#333333">
+                                <!-- 左侧大导航 begin -->
+                                <nav class="nav-primary hidden-xs">
+                                    <ul class="nav">
+										<li>
+                                            <a href="">
+                                                <span></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="index" class="active">
+                                                <i class="fa fa-home icon">
+                                                    <b class="bg-danger"></b>
+                                                </i>
+                                                <span>后台主页</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <i class="fa fa-desktop icon">
+                                                    <b class="bg-success"></b>
+                                                </i>
+                                                <span class="pull-right">
+                                                    <i class="fa fa-angle-down text"></i>
+                                                    <i class="fa fa-angle-up text-active"></i>
+                                                </span>
+                                                <span>首页管理</span>
+                                            </a>
+                                            <ul class="nav lt">
+                                                <li>
+                                                    <a href="">
+                                                        <i class="fa fa-angle-down text"></i>
+                                                        <i class="fa fa-angle-up text-active"></i>
+                                                        <span>首页中心</span>
+                                                    </a>
+                                                    <ul class="nav bg">
+                                                        <li><a href="navigation"><i class="fa fa-angle-right"></i><span>导航菜单</span> </a></li>
+														<li><a href="advert"><i class="fa fa-angle-right"></i><span>滚动广告</span> </a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="active">
+                                            <a href="">
+                                                <i class="fa fa-desktop icon">
+                                                    <b class="bg-success"></b>
+                                                </i>
+                                                <span class="pull-right">
+                                                    <i class="fa fa-angle-down text"></i>
+                                                    <i class="fa fa-angle-up text-active"></i>
+                                                </span>
+                                                <span>图书管理</span>
+                                            </a>
+                                            <ul class="nav lt">
+                                                <li class="active">
+                                                    <a href="">
+                                                        <i class="fa fa-angle-down text"></i>
+                                                        <i class="fa fa-angle-up text-active"></i>
+                                                        <span>图书中心</span>
+                                                    </a>
+                                                    <ul class="nav bg">
+                                                        <li><a href="outstorebook"><i class="fa fa-angle-right"></i><span>未上架图书列表</span> </a></li>
+														<li class="active"><a href="instorebook"><i class="fa fa-angle-right"></i><span>已经上架图书列表</span> </a></li>
+														<li><a href="discstorebook"><i class="fa fa-angle-right"></i><span>有折扣图书列表</span> </a></li>
+														<li><a href="newstorebook"><i class="fa fa-angle-right"></i><span>新书上架列表</span> </a></li>
+														<li><a href="hotstorebook"><i class="fa fa-angle-right"></i><span>畅销书推荐列表</span> </a></li>
+														<li><a href="highstorebook"><i class="fa fa-angle-right"></i><span>评分最高列表</span> </a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+										<li>
+                                            <a href="">
+                                                <i class="fa fa-desktop icon">
+                                                    <b class="bg-success"></b>
+                                                </i>
+                                                <span class="pull-right">
+                                                    <i class="fa fa-angle-down text"></i>
+                                                    <i class="fa fa-angle-up text-active"></i>
+                                                </span>
+                                                <span>评论管理</span>
+                                            </a>
+                                            <ul class="nav lt">
+                                                <li>
+                                                    <a href="">
+                                                        <i class="fa fa-angle-down text"></i>
+                                                        <i class="fa fa-angle-up text-active"></i>
+                                                        <span>评论中心</span>
+                                                    </a>
+                                                    <ul class="nav bg">
+														<li><a href="reviewswait"><i class="fa fa-angle-right"></i><span>待审核评论</span> </a></li>
+                                                        <li><a href="reviewspass"><i class="fa fa-angle-right"></i><span>已通过评论</span> </a></li>
+														<li><a href="reviewsnopass"><i class="fa fa-angle-right"></i><span>未通过评论</span> </a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+										<li>
+                                            <a href="">
+                                                <i class="fa fa-desktop icon">
+                                                    <b class="bg-success"></b>
+                                                </i>
+                                                <span class="pull-right">
+                                                    <i class="fa fa-angle-down text"></i>
+                                                    <i class="fa fa-angle-up text-active"></i>
+                                                </span>
+                                                <span>订单管理</span>
+                                            </a>
+                                            <ul class="nav lt">
+                                                <li>
+                                                    <a href="">
+                                                        <i class="fa fa-angle-down text"></i>
+                                                        <i class="fa fa-angle-up text-active"></i>
+                                                        <span>订单中心</span>
+                                                    </a>
+                                                    <ul class="nav bg">
+                                                        <li><a href="orderwait"><i class="fa fa-angle-right"></i><span>未处理订单</span> </a></li>
+														<li><a href="orderpass"><i class="fa fa-angle-right"></i><span>已处理订单</span> </a></li>
+														<li><a href="orderfinish"><i class="fa fa-angle-right"></i><span>已完成订单</span> </a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+										<li>
+                                            <a href="">
+                                                <i class="fa fa-desktop icon">
+                                                    <b class="bg-success"></b>
+                                                </i>
+                                                <span class="pull-right">
+                                                    <i class="fa fa-angle-down text"></i>
+                                                    <i class="fa fa-angle-up text-active"></i>
+                                                </span>
+                                                <span>帐号管理</span>
+                                            </a>
+                                            <ul class="nav lt">
+                                                <li>
+                                                    <a href="">
+                                                        <i class="fa fa-angle-down text"></i>
+                                                        <i class="fa fa-angle-up text-active"></i>
+                                                        <span>帐号中心</span>
+                                                    </a>
+                                                    <ul class="nav bg">
+                                                        <li><a href="getAllUser"><i class="fa fa-angle-right"></i><span>已注册用户</span> </a></li>
+														<li><a href="updatePassword"><i class="fa fa-angle-right"></i><span>修改密码</span> </a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+										<li>
+                                            <a href="">
+                                                <i class="fa fa-desktop icon">
+                                                    <b class="bg-success"></b>
+                                                </i>
+                                                <span class="pull-right">
+                                                    <i class="fa fa-angle-down text"></i>
+                                                    <i class="fa fa-angle-up text-active"></i>
+                                                </span>
+                                                <span>反馈管理</span>
+                                            </a>
+                                            <ul class="nav lt">
+                                                <li>
+                                                    <a href="">
+                                                        <i class="fa fa-angle-down text"></i>
+                                                        <i class="fa fa-angle-up text-active"></i>
+                                                        <span>反馈中心</span>
+                                                    </a>
+                                                    <ul class="nav bg">
+                                                        <li><a href="feedbackshow"><i class="fa fa-angle-right"></i><span>用户反馈</span> </a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <!-- 左面大导航 end -->
+                            </div>
+                        </section>
+                        <footer class="footer lt hidden-xs b-t b-dark">
+                            <a href="#nav" data-toggle="class:nav-xs" class="pull-right btn btn-sm btn-dark btn-icon">
+                                <i class="fa fa-angle-left text"></i>
+                                <i class="fa fa-angle-right text-active"></i>
+                            </a>
+                            
+                        </footer>
+                    </section>
+                </aside>
+                <!-- 公用左侧导航  end-->
+                <section id="content">
+                    <section class="vbox">
+                        <!--头部功能-->
+                        <!--表格主体-->
+                        <section class="scrollable padder">
+                            <div class="m-b-md">
+                            </div>
+                            <!--数据表格  begin -->
+							<section class="panel panel-default">
+                                <div class="table-responsive">
+                                    <table class="table table-striped m-b-none">
+                                        <thead>
+                                            <tr>
+                                                <th>编号</th>
+                                                <th>书名</th>
+												<th>封面</th>
+                                                <th>作者</th>
+												<th>原价</th>
+												<th>分类</th>
+												<th>ISBN</th>
+												<th>库存</th>
+												<th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+											#if(${bookInfoList} != "[]")
+    											#foreach($book in $bookInfoList)
+                                                 <tr>
+                                                    <td>$velocityCount</td>
+                                                    <td>$!book.bookName</td>
+    												<td><a class="lightbox" href="$!imagesPath$!{book.bookPicture}" title=""><font color="red">查看封面</font></a></td>
+    												<td>$!book.bookAuthor</td>
+    												<td>￥$!book.bookPrice</td>
+    												<td>$!book.bookType</td>
+    												<td>$!book.bookISBN</td>
+													<td>$!book.bookCount</td>
+													#if($!book.isDiscounts == 0)
+														#if($!book.isNew == 0)
+    														#if($!book.isHot == 0)
+    																#if($!book.isHigh == 0)
+        															<td>
+																		<a title="折扣" data-original-title="" class="btn btn-xs btn-dark js_disc_book" code="$!book.code" href="#addDisc" data-title="折扣" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> 折扣</i>
+                                                                        </a>
+    																	<a title="New" data-original-title="" class="btn btn-xs btn-warning js_new_book" code="$!book.code" data-title="New" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> New</i>
+                                                                        </a>
+                														<a title="Hot" data-original-title="" class="btn btn-xs btn-facebook js_hot_book" code="$!book.code" data-title="Hot" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> Hot</i>
+                                                                        </a>
+                														<a title="High" data-original-title="" class="btn btn-xs btn-success js_high_book" code="$!book.code" data-title="High" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> High</i>
+                                                                        </a>
+                                                                        <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                            <i class="fa fa-edit"> 编辑</i>
+                                                                        </a>
+                    													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                            <i class="fa fa-minus-square"> 删除</i>
+                                                                        </a>
+                                                                    </td>
+    																#else
+    																<td>
+																		<a title="折扣" data-original-title="" class="btn btn-xs btn-dark js_disc_book" code="$!book.code" href="#addDisc" data-title="折扣" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> 折扣</i>
+                                                                        </a>
+    																	<a title="New" data-original-title="" class="btn btn-xs btn-warning js_new_book" code="$!book.code" data-title="New" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> New</i>
+                                                                        </a>
+    																	<a title="Hot" data-original-title="" class="btn btn-xs btn-facebook js_hot_book" code="$!book.code" data-title="Hot" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> Hot</i>
+                                                                        </a>
+                                                                        <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                            <i class="fa fa-edit"> 编辑</i>
+                                                                        </a>
+                    													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                            <i class="fa fa-minus-square"> 删除</i>
+                                                                        </a>
+                                                                    </td>
+    																#end
+    															#else
+    																#if($!book.isHigh == 0)
+        															<td>
+																		<a title="折扣" data-original-title="" class="btn btn-xs btn-dark js_disc_book" code="$!book.code" href="#addDisc" data-title="折扣" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> 折扣</i>
+                                                                        </a>
+    																	<a title="New" data-original-title="" class="btn btn-xs btn-warning js_new_book" code="$!book.code" data-title="New" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> New</i>
+                                                                        </a>
+                														<a title="High" data-original-title="" class="btn btn-xs btn-success js_high_book" code="$!book.code" data-title="High" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> High</i>
+                                                                        </a>
+                                                                        <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                            <i class="fa fa-edit"> 编辑</i>
+                                                                        </a>
+                    													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                            <i class="fa fa-minus-square"> 删除</i>
+                                                                        </a>
+                                                                    </td>
+    																#else
+    																<td>
+																		<a title="折扣" data-original-title="" class="btn btn-xs btn-dark js_disc_book" code="$!book.code" href="#addDisc" data-title="折扣" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> 折扣</i>
+                                                                        </a>
+    																	<a title="New" data-original-title="" class="btn btn-xs btn-warning js_new_book" code="$!book.code" data-title="New" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> New</i>
+                                                                        </a>
+                                                                        <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                            <i class="fa fa-edit"> 编辑</i>
+                                                                        </a>
+                    													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                            <i class="fa fa-minus-square"> 删除</i>
+                                                                        </a>
+                                                                    </td>
+    																#end
+    															#end
+														#else
+															#if($!book.isHot == 0)
+																#if($!book.isHigh == 0)
+    															<td>
+																	<a title="折扣" data-original-title="" class="btn btn-xs btn-dark js_disc_book" code="$!book.code" href="#addDisc" data-title="折扣" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> 折扣</i>
+                                                                    </a>
+            														<a title="Hot" data-original-title="" class="btn btn-xs btn-facebook js_hot_book" code="$!book.code" data-title="Hot" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> Hot</i>
+                                                                    </a>
+            														<a title="High" data-original-title="" class="btn btn-xs btn-success js_high_book" code="$!book.code" data-title="High" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> High</i>
+                                                                    </a>
+                                                                    <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                        <i class="fa fa-edit"> 编辑</i>
+                                                                    </a>
+                													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                        <i class="fa fa-minus-square"> 删除</i>
+                                                                    </a>
+                                                                </td>
+																#else
+																<td>
+																	<a title="折扣" data-original-title="" class="btn btn-xs btn-dark js_disc_book" code="$!book.code" href="#addDisc" data-title="折扣" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> 折扣</i>
+                                                                    </a>
+																	<a title="Hot" data-original-title="" class="btn btn-xs btn-facebook js_hot_book" code="$!book.code" data-title="Hot" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> Hot</i>
+                                                                    </a>
+                                                                    <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                        <i class="fa fa-edit"> 编辑</i>
+                                                                    </a>
+                													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                        <i class="fa fa-minus-square"> 删除</i>
+                                                                    </a>
+                                                                </td>
+																#end
+															#else
+																#if($!book.isHigh == 0)
+    															<td>
+																	<a title="折扣" data-original-title="" class="btn btn-xs btn-dark js_disc_book" code="$!book.code" href="#addDisc" data-title="折扣" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> 折扣</i>
+                                                                    </a>
+            														<a title="High" data-original-title="" class="btn btn-xs btn-success js_high_book" code="$!book.code" data-title="High" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> High</i>
+                                                                    </a>
+                                                                    <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                        <i class="fa fa-edit"> 编辑</i>
+                                                                    </a>
+                													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                        <i class="fa fa-minus-square"> 删除</i>
+                                                                    </a>
+                                                                </td>
+																#else
+																<td>
+																	<a title="折扣" data-original-title="" class="btn btn-xs btn-dark js_disc_book" code="$!book.code" href="#addDisc" data-title="折扣" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> 折扣</i>
+                                                                    </a>
+                                                                    <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                        <i class="fa fa-edit"> 编辑</i>
+                                                                    </a>
+                													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                        <i class="fa fa-minus-square"> 删除</i>
+                                                                    </a>
+                                                                </td>
+																#end
+															#end
+														#end
+													#else
+														#if($!book.isNew == 0)
+    														#if($!book.isHot == 0)
+    																#if($!book.isHigh == 0)
+        															<td>
+    																	<a title="New" data-original-title="" class="btn btn-xs btn-warning js_new_book" code="$!book.code" data-title="New" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> New</i>
+                                                                        </a>
+                														<a title="Hot" data-original-title="" class="btn btn-xs btn-facebook js_hot_book" code="$!book.code" data-title="Hot" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> Hot</i>
+                                                                        </a>
+                														<a title="High" data-original-title="" class="btn btn-xs btn-success js_high_book" code="$!book.code" data-title="High" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> High</i>
+                                                                        </a>
+                                                                        <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                            <i class="fa fa-edit"> 编辑</i>
+                                                                        </a>
+                    													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                            <i class="fa fa-minus-square"> 删除</i>
+                                                                        </a>
+                                                                    </td>
+    																#else
+    																<td>
+    																	<a title="New" data-original-title="" class="btn btn-xs btn-warning js_new_book" code="$!book.code" data-title="New" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> New</i>
+                                                                        </a>
+    																	<a title="Hot" data-original-title="" class="btn btn-xs btn-facebook js_hot_book" code="$!book.code" data-title="Hot" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> Hot</i>
+                                                                        </a>
+                                                                        <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                            <i class="fa fa-edit"> 编辑</i>
+                                                                        </a>
+                    													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                            <i class="fa fa-minus-square"> 删除</i>
+                                                                        </a>
+                                                                    </td>
+    																#end
+    															#else
+    																#if($!book.isHigh == 0)
+        															<td>
+    																	<a title="New" data-original-title="" class="btn btn-xs btn-warning js_new_book" code="$!book.code" data-title="New" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> New</i>
+                                                                        </a>
+                														<a title="High" data-original-title="" class="btn btn-xs btn-success js_high_book" code="$!book.code" data-title="High" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> High</i>
+                                                                        </a>
+                                                                        <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                            <i class="fa fa-edit"> 编辑</i>
+                                                                        </a>
+                    													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                            <i class="fa fa-minus-square"> 删除</i>
+                                                                        </a>
+                                                                    </td>
+    																#else
+    																<td>
+    																	<a title="New" data-original-title="" class="btn btn-xs btn-warning js_new_book" code="$!book.code" data-title="New" data-toggle="modal">
+                                                                            <i class="fa fa-eye"> New</i>
+                                                                        </a>
+                                                                        <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                            <i class="fa fa-edit"> 编辑</i>
+                                                                        </a>
+                    													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                            <i class="fa fa-minus-square"> 删除</i>
+                                                                        </a>
+                                                                    </td>
+    																#end
+    															#end
+														#else
+															#if($!book.isHot == 0)
+																#if($!book.isHigh == 0)
+    															<td>
+            														<a title="Hot" data-original-title="" class="btn btn-xs btn-facebook js_hot_book" code="$!book.code" data-title="Hot" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> Hot</i>
+                                                                    </a>
+            														<a title="High" data-original-title="" class="btn btn-xs btn-success js_high_book" code="$!book.code" data-title="High" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> High</i>
+                                                                    </a>
+                                                                    <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                        <i class="fa fa-edit"> 编辑</i>
+                                                                    </a>
+                													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                        <i class="fa fa-minus-square"> 删除</i>
+                                                                    </a>
+                                                                </td>
+																#else
+																<td>
+																	<a title="Hot" data-original-title="" class="btn btn-xs btn-facebook js_hot_book" code="$!book.code" data-title="Hot" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> Hot</i>
+                                                                    </a>
+                                                                    <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                        <i class="fa fa-edit"> 编辑</i>
+                                                                    </a>
+                													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                        <i class="fa fa-minus-square"> 删除</i>
+                                                                    </a>
+                                                                </td>
+																#end
+															#else
+																#if($!book.isHigh == 0)
+    															<td>
+            														<a title="High" data-original-title="" class="btn btn-xs btn-success js_high_book" code="$!book.code" data-title="High" data-toggle="modal">
+                                                                        <i class="fa fa-eye"> High</i>
+                                                                    </a>
+                                                                    <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                        <i class="fa fa-edit"> 编辑</i>
+                                                                    </a>
+                													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                        <i class="fa fa-minus-square"> 删除</i>
+                                                                    </a>
+                                                                </td>
+																#else
+																<td>
+                                                                    <a title="编辑图书" data-original-title="" class="btn btn-xs btn-info js_edit_book" code = "$!book.code" bookName="$!book.bookName" bookPrice="$!book.bookPrice" bookAuthor="$!book.bookAuthor" bookPress="$!book.bookPress" bookPublictionTime="$!book.bookPublictionTime" bookType="$!book.bookType" bookDescribe="$!book.bookDescribe" bookISBN="$!book.bookISBN" bookBatch="$!book.bookBatch" bookCount = "$!book.bookCount" href="#editnew" data-title="编辑图书" data-toggle="modal">
+                                                                        <i class="fa fa-edit"> 编辑</i>
+                                                                    </a>
+                													<a title="删除图书" data-original-title="" class="btn btn-xs btn-danger js_delete_book" code = "$!book.code" data-title="删除图书" data-toggle="modal">
+                                                                        <i class="fa fa-minus-square"> 删除</i>
+                                                                    </a>
+                                                                </td>
+																#end
+															#end
+														#end
+													#end
+                                                </tr>
+												#end
+											#else
+												<tr>
+                                                    <td colspan="9">
+														<span style="font-size:20pt;color:red;margin-left:30%">暂无上架图书！</span>
+													</td>
+                                                </tr>
+											#end
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </section>
+                            <!--数据表格  end -->
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+	
+	    <div class="modal fade" id="addDisc">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">添加折扣</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="addDiscForm" method="get">
+						<input type="hidden" id="codeDisc" name="code">
+                        <div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">折扣:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="bookDiscountsDisc" name="bookDiscounts" class="form-control">
+								<span style="color:red">* 请输入折扣的百分点,如打八折则输入0.2</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                    <button type="button" id="addDiscButton" class="btn btn-info">添加</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+	<script>
+		$(function(){
+		
+			$(".js_disc_book").click(function(){
+				var code = $(this).attr("code");
+				$("#codeDisc").val(code);
+			})
+		
+			$("#addDiscButton").click(function(){
+				if($("#bookDiscountsDisc").val() == ""){
+					alert("折扣不能为空！");
+				}else{
+					$("#addDiscForm").attr("action","instorebookdisc");
+					$("#addDiscForm").submit();
+				}
+			})
+			
+			$(".js_edit_book").click(function(){
+				var code = $(this).attr("code");
+				var bookName = $(this).attr("bookName");
+				var bookPrice = $(this).attr("bookPrice");
+				var bookAuthor = $(this).attr("bookAuthor");
+				var bookPress = $(this).attr("bookPress");
+				var bookPublictionTime = $(this).attr("bookPublictionTime");
+				var bookType = $(this).attr("bookType");
+				var bookDescribe = $(this).attr("bookDescribe");
+				var bookISBN = $(this).attr("bookISBN");
+				var bookBatch = $(this).attr("bookBatch");
+				var bookCount = $(this).attr("bookCount");
+				$("#code").val(code);
+				$("#bookName").val(bookName);
+				$("#bookPrice").val(bookPrice);
+				$("#bookAuthor").val(bookAuthor);
+				$("#bookPress").val(bookPress);
+				$("#bookPublictionTime").val(bookPublictionTime);
+				$("#bookType").val(bookType);
+				$("#bookDescribe").val(bookDescribe);
+				$("#bookISBN").val(bookISBN);
+				$("#bookBatch").val(bookBatch);
+				$("#bookCount").val(bookCount);
+			})
+			$(".js_delete_book").click(function(){
+				var code = $(this).attr("code");
+				if(confirm("删除后不可恢复!是否确定删除?")){
+					window.location.href="instorebookdelete?code="+code;
+				}
+			})
+			$(".js_new_book").click(function(){
+				var code = $(this).attr("code");
+				if(confirm("是否显示在首页新书推荐?")){
+					window.location.href="instorebooknew?code="+code;
+				}
+			})
+			$(".js_hot_book").click(function(){
+				var code = $(this).attr("code");
+				if(confirm("是否显示在首页热门推荐?")){
+					window.location.href="instorebookhot?code="+code;
+				}
+			})
+			$(".js_high_book").click(function(){
+				var code = $(this).attr("code");
+				if(confirm("是否显示在首页评分推荐?")){
+					window.location.href="instorebookhigh?code="+code;
+				}
+			})
+		})
+	</script>
+	
+    <div class="modal fade" id="editnew">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">编辑图书</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="editBookForm" method="post" enctype="multipart/form-data">
+						<input type="hidden" id="code" name="code">
+                        <div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">书名:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="bookName" name="bookName" class="form-control">
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">价格:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="bookPrice" name="bookPrice" class="form-control">
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">作者:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="bookAuthor" name="bookAuthor" class="form-control">
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">出版社:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="bookPress" name="bookPress" class="form-control">
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">出版时间:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="bookPublictionTime" name="bookPublictionTime" class="form-control">
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">分类:</label>
+                            <div class="col-sm-10">
+                                <select class="input form-control" id="bookType" name="bookType" style="width:189px;">
+                                  #foreach($nav in $navList)
+								  <option value="$nav.navPareName">$nav.navPareName</option>
+                                  #end
+                                </select>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">描述:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="bookDescribe" name="bookDescribe" class="form-control">
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">ISBN:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="bookISBN" name="bookISBN" class="form-control">
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">批次号:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="bookBatch" name="bookBatch" class="form-control">
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">库存:</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="bookCount" name="bookCount" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-id-1" class="col-sm-2 control-label">封面:</label>
+                            <div class="col-sm-10">
+                                <div class="file-box">
+									<input type='text' name='bookPic' id='bookPic' class='txtnew' />  
+									<input type='button' class='btnnew' value='浏览...' />
+									<input type="file" name="file" class="filenew" id="file" size="28" accept="image/*" runat="server"/>
+								</div>
+								<span>附件不要大于<span style="color:red;">10M</span></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                    <button type="button" id="editBookButton" class="btn btn-info">修改</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!--弹层信息-->
+	
+	<script>
+		$(function(){
+			$("#editBookButton").click(function(){
+				if($("#bookName").val() == ""){
+					alert("书名不能为空！");
+				}else if($("#bookPrice").val() == ""){
+					alert("价格不能为空！");
+				}else if($("#bookAuthor").val() == ""){
+					alert("作者不能为空！");
+				}else if($("#bookPress").val() == ""){
+					alert("出版社不能为空！");
+				}else if($("#bookPublictionTime").val() == ""){
+					alert("出版时间不能为空！");
+				}else if($("#bookDescribe").val() == ""){
+					alert("描述不能为空！");
+				}else if($("#bookISBN").val() == ""){
+					alert("ISBN不能为空！");
+				}else if($("#bookBatch").val() == ""){
+					alert("批次号不能为空！");
+				}else if($("#bookPic").val() == ""){
+					alert("请上传图书封面！");
+				}else{
+					$("#editBookForm").attr("action","instorebookupdate");
+					$("#editBookForm").submit();
+				}
+			})
+		})
+	</script>
+
+    <!-- lightbox -->
+	<style rel="stylesheet" type="text/css">
+		#lightbox{
+	position: absolute;
+	left: 0;
+	width: 100%;
+	z-index: 100;
+	text-align: center;
+	line-height: 0;
+	}
+
+#lightbox a img{ border: none; }
+
+#outerImageContainer{
+	position: relative;
+	background-color: #fff;
+	width: 250px;
+	height: 250px;
+	margin: 0 auto;
+	}
+
+#imageContainer{
+	padding: 10px;
+	}
+
+#loading{
+	position: absolute;
+	top: 40%;
+	left: 0%;
+	height: 25%;
+	width: 100%;
+	text-align: center;
+	line-height: 0;
+	}
+#hoverNav{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 10;
+	}
+#imageContainer>#hoverNav{ left: 0;}
+#hoverNav a{ outline: none;}
+
+#prevLink, #nextLink{
+	width: 49%;
+	height: 100%;
+	background: transparent url(${rc.contextPath}/resources/images/blank.gif) no-repeat; /* Trick IE into showing hover */
+	display: block;
+	}
+#prevLink { left: 0; float: left;}
+#nextLink { right: 0; float: right;}
+#prevLink:hover, #prevLink:visited:hover { background: url(${rc.contextPath}/resources/images/prev.gif) left 50% no-repeat; }
+#nextLink:hover, #nextLink:visited:hover { background: url(${rc.contextPath}/resources/images/next.gif) right 50% no-repeat; }
+
+/*** START : next / previous text links ***/
+#nextLinkText, #prevLinkText{
+color: #FF9834;
+font-weight:bold;
+text-decoration: none;
+}
+#nextLinkText{
+padding-left: 20px;
+}
+#prevLinkText{
+padding-right: 20px;
+}
+/*** END : next / previous text links ***/
+/*** START : added padding when navbar is on top ***/
+
+.ontop #imageData {
+    padding-top: 5px;
+}
+
+/*** END : added padding when navbar is on top ***/
+
+#imageDataContainer{
+	font: 10px Verdana, Helvetica, sans-serif;
+	background-color: #fff;
+	margin: 0 auto;
+	line-height: 1.4em;
+	}
+
+#imageData{
+	padding:0 10px;
+	}
+#imageData #imageDetails{ width: 70%; float: left; text-align: left; }	
+#imageData #caption{ font-weight: bold;	}
+#imageData #numberDisplay{ display: block; clear: left; padding-bottom: 1.0em;	}
+#imageData #numberDisplay a { color: black; padding-left: 5px; padding-right: 5px;}
+#imageData #bottomNavClose{ width: 66px; float: right;  padding-bottom: 0.7em;	}
+#imageData #helpDisplay {clear: left; float: left; display: block; }
+
+#overlay{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 90;
+	width: 100%;
+	height: 500px;
+	background-color: #000;
+	filter:alpha(opacity=60);
+	-moz-opacity: 0.6;
+	opacity: 0.6 !important;
+	display: none;
+	}
+	
+
+.clearfix:after {
+	content: "."; 
+	display: block; 
+	height: 0; 
+	clear: both; 
+	visibility: hidden;
+	}
+
+* html>body .clearfix {
+	display: inline-block; 
+	width: 100%;
+	}
+
+* html .clearfix {
+	/* Hides from IE-mac \*/
+	height: 1%;
+	/* End hide from IE-mac */
+	}	
+
+#lightboxIframe {
+	display: none;
+}	
+
+	</style>
+</body>
+</html>

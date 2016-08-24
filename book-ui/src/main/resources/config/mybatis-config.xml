@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 为实体类起别名 -->
+	<typeAliases>
+		<typeAlias alias="BookInfoBean" type="com.fanyongliang.book.beans.BookInfoBean" />
+		<typeAlias alias="BookOrderBean" type="com.fanyongliang.book.beans.BookOrderBean" />
+		<typeAlias alias="BookOrderInfoBean" type="com.fanyongliang.book.beans.BookOrderInfoBean" />
+		<typeAlias alias="BookReviewsBean" type="com.fanyongliang.book.beans.BookReviewsBean" />
+		<typeAlias alias="NavListBean" type="com.fanyongliang.book.beans.NavListBean" />
+		<typeAlias alias="ShoppingCarBean" type="com.fanyongliang.book.beans.ShoppingCarBean" />
+		<typeAlias alias="UserAddressBean" type="com.fanyongliang.book.beans.UserAddressBean" />
+		<typeAlias alias="UserInfoBean" type="com.fanyongliang.book.beans.UserInfoBean" />
+		<typeAlias alias="UserPasswdBean" type="com.fanyongliang.book.beans.UserPasswdBean" />
+		<typeAlias alias="AdvPhotoBean" type="com.fanyongliang.book.beans.AdvPhotoBean" />
+		<typeAlias alias="BookCompareBean" type="com.fanyongliang.book.beans.BookCompareBean" />
+		<typeAlias alias="UserFeedbackBean" type="com.fanyongliang.book.beans.UserFeedbackBean" />
+
+	</typeAliases>
+	<environments default="book">
+		<environment id="book">
+			<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driverClassName}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="mapper/BookInfoMapper.xml" />
+		<mapper resource="mapper/BookOrderMapper.xml" />
+		<mapper resource="mapper/BookOrderInfoMapper.xml" />
+		<mapper resource="mapper/BookReviewsMapper.xml" />
+		<mapper resource="mapper/NavListMapper.xml" />
+		<mapper resource="mapper/ShoppingCarMapper.xml" />
+		<mapper resource="mapper/UserAddressMapper.xml" />
+		<mapper resource="mapper/UserInfoMapper.xml" />
+		<mapper resource="mapper/UserPasswdMapper.xml" />
+		<mapper resource="mapper/AdvPhotoMapper.xml" />
+		<mapper resource="mapper/BookCompareMapper.xml" />
+		<mapper resource="mapper/UserFeedbackMapper.xml" />
+	</mappers>
+</configuration>
