@@ -1,2 +1,2 @@
 # online-book-shopping
-Book .
+A online-book-shopping based on SpringMVC+MyBatis+Maven+Velocity . 
